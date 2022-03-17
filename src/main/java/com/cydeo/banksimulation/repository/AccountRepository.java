@@ -27,4 +27,10 @@ public class AccountRepository {
        return accountList.stream().filter(account -> account.getId().equals(accountId)).findAny().orElseThrow(() ->
                 new RecordNotFoundException("This account is not in the databse"));
     }
+
+    public Account update(Account account){
+        accountList.remove(findById(account.getId()));
+        accountList.add(account);
+        return account;
+    }
 }
