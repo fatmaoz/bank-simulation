@@ -38,6 +38,7 @@
                                     <td th:text="${account.getAccountType()}"></td>
                                     <td th:text="${account.getCreationDate()}"></td>
                                     <td><a class="btn btn-danger" th:href="@{/delete/{id}(id=${account.id})}">Delete</a></td>
+      <!--                                    <td><a th:href="@{/delete?id={id}(id=${account.id})}">Delete</a></td>-->
                                     <td><a class="btn btn-success" th:href="@{/transactions/{id}(id=${account.id})}">Account Transactions</a></td>
                                 </tr>
                             </tbody>

@@ -49,5 +49,15 @@ public class AccountController {
         accountService.deleteAccount(id);
         return "redirect:/index";
     }
+    
+  //  @GetMapping("/delete")
+//    public String deleteUser(@RequestParam UUID id, Model model) {
+//        model.addAttribute("id", id);
+//        accountService.deleteAccount(id);
+//        return "redirect:/index";
+//    }
+    
+    
+
 
 }
