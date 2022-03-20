@@ -10,42 +10,40 @@
     <link rel="stylesheet" href="../css/shards.min.css">
 </head>
 <body>
-<div th:switch="${lastTransactionList}" class="container my-5">
+<div class="container my-5">
     <div class="row">
         <div class="col-md-6">
-            <h2 th:case="null">No Transactions yet!</h2>
-            <div th:case="*">
+            <div>
                 <form action="#" th:action="@{/transfer}" th:object="${transaction}" method="post">
                     <div class="row">
                         <div class="form-group blu-margin">
-                            <select class="form-control" th:field="*{sender}"  id="dropOperator">
+                            <label for="sender" class="col-form-label">Sender</label>
+                            <select class="form-control" th:field="*{sender}" id="sender">
                                 <option value="0">Select Account</option>
-                                <option th:each="account : ${accounts}" th:value="${account.getId()}" th:text="${account.getBalance()} + '-' + ${account.getId()}"></option>
+                                <option th:each="account : ${accounts}" th:value="${account.getId()}" th:text="${account.getBalance()} + '-' + ${account.getUserId()} + '-' + ${account.getAccountType()}"></option>
                             </select>
                         </div>
 
                         <div class="form-group blu-margin">
-                            <select class="form-control" th:field="*{receiver}"  id="dropOperator">
+                            <label for="receiver" class="col-form-label">Receiver</label>
+                            <select class="form-control" th:field="*{receiver}" id="receiver">
                                 <option value="0">Select Account</option>
-                                <option th:each="account : ${accounts}" th:value="${account.getId()}" th:text="${account.getBalance()} + '-' + ${account.getId()}"></option>
+                                <option th:each="account : ${accounts}" th:value="${account.getId()}" th:text="${account.getBalance()} + '-' + ${account.getUserId()} + '-' + ${account.getAccountType()}"></option>
                             </select>
                         </div>
 
                         <div class="form-group blu-margin">
                             <label for="amount" class="col-form-label">Amount</label>
-                            <input type="text" th:field="*{amount}" class="form-control" id="userId" placeholder="Amount">
-                            <span th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}" class="text-danger"></span>
+                            <input type="text" th:field="*{amount}" class="form-control" id="amount" placeholder="Amount">
                         </div>
 
                         <div class="form-group blu-margin">
-                            <label for="message" class="col-form-label">Amount</label>
-                            <input type="text" th:field="*{message}" class="form-control" id="userId" placeholder="Message">
-                            <span th:if="${#fields.hasErrors('message')}" th:errors="*{message}" class="text-danger"></span>
+                            <label for="message" class="col-form-label">Message</label>
+                            <input type="text" th:field="*{message}" class="form-control" id="message" placeholder="Message">
                         </div>
-
                     </div>
                     <div class="row">
-                        <div class="col-md-6 mt-5">
+                        <div class="col-md-6 my-5">
                             <input type="submit" class="btn btn-primary" value="Make transfer">
                         </div>
                     </div>
@@ -72,8 +70,8 @@
                     </tr>
                     </tbody>
                 </table>
+                <p class="my-5"><a th:href="@{/index}" class="btn btn-primary">Home Page</a></p>
             </div>
-            <p class="my-5"><a href="/index" class="btn btn-primary"></i></a></p>
         </div>
     </div>
 </div>

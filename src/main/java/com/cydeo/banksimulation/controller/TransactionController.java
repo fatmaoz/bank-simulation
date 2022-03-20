@@ -5,7 +5,6 @@ import com.cydeo.banksimulation.entity.Transaction;
 import com.cydeo.banksimulation.service.AccountService;
 import com.cydeo.banksimulation.service.TransactionService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +26,7 @@ public class TransactionController {
     }
 
     @GetMapping("/make-transfer")
-    public String retrieveTransactionDetailByAccountId(Account account, Model model) {
+    public String retrieveTransactionDetailByAccountId(Model model) {
         model.addAttribute("lastTransactionList", transactionService.retrieveLastTransactions());
         model.addAttribute("accounts", accountService.listAllAccount());
         model.addAttribute("transaction", Transaction.builder().build());
@@ -35,7 +34,7 @@ public class TransactionController {
     }
 
     @PostMapping("/transfer")
-    public String makeTransfer(Transaction transaction, Model model){
+    public String makeTransfer(@ModelAttribute("transaction") Transaction transaction){
         Account receiver = accountService.retrieveById(transaction.getReceiver());
         Account sender = accountService.retrieveById(transaction.getSender());
         transactionService.makeTransfer(transaction.getAmount(), new Date(), sender, receiver, transaction.getMessage());

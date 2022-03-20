@@ -6,15 +6,10 @@ import com.cydeo.banksimulation.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/")
@@ -24,23 +19,22 @@ public class AccountController {
     private final AccountService accountService;
 
     @GetMapping("/create-form")
-    public String getCreateForm(Account account, Model model){
+    public String getCreateForm(Model model){
+        model.addAttribute("account", Account.builder().build());
         model.addAttribute("accountTypes", AccountType.values());
-        model.addAttribute("accountType", AccountType.SAVINGS);
         return "create-account";
     }
 
-
     @PostMapping("/create")
-    public String createAccount(Account account, BindingResult result, Model model) {
-        if (result.hasErrors()){
-            return "create-account";
-        }
+    public String createAccount(@ModelAttribute("account") Account account, Model model) {
+
         accountService.createNewAccount(account.getBalance(),
                 new Date(),
                 account.getAccountType(),
                 account.getUserId());
+
         model.addAttribute(accountService.listAllAccount());
+
         return "redirect:/index";
     }
 
@@ -49,9 +43,11 @@ public class AccountController {
         model.addAttribute("accountList", accountService.listAllAccount());
         return "index";
     }
-    @DeleteMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") UUID id, Model model) {
+
+    @GetMapping("/delete/{id}")
+    public String deleteUser(@PathVariable("id") UUID id) {
         accountService.deleteAccount(id);
         return "redirect:/index";
     }
+
 }
