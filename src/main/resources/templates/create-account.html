@@ -29,9 +29,9 @@
                     </div>
 
                     <div class="form-group blu-margin">
-                        <label for="dropOperator" class="col-form-label">Select Account</label>
+                        <label for="dropOperator" class="col-form-label">Account Type</label>
                         <select class="form-control" th:field="*{accountType}" id="dropOperator">
-                            <option value="0">Select</option>
+                            <option value="0">Select Account</option>
                             <option th:each="accountType : ${accountTypes}" th:value="${accountType.name()}"
                                     th:text="${accountType.name}"></option>
                         </select>
