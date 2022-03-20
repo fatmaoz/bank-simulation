@@ -33,7 +33,7 @@
                         <select class="form-control" th:field="*{accountType}" id="dropOperator">
                             <option value="0">Select Account</option>
                             <option th:each="accountType : ${accountTypes}" th:value="${accountType.name()}"
-                                    th:text="${accountType.name}"></option>
+                                    th:text="${accountType.name()}"></option>
                         </select>
                     </div>
                 </div>
