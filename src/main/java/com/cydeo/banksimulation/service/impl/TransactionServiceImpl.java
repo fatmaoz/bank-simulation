@@ -100,6 +100,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<Transaction> retrieveLastTransactions() {
+
         return transactionRepository.retrieveLastTransactions();
     }
 }

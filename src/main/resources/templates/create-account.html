@@ -17,21 +17,35 @@
     <div class="row">
         <div class="col-md-6">
             <form action="#" th:action="@{/create}" th:object="${account}" method="post">
+                <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+                    <p th:text="#{account.hasErrors}">Error Message</p>
+                </div>
                 <div class="row">
-                    <div class="form-group blu-margin">
+
+                    <div class="form-group blu-margin" th:class="${#fields.hasErrors('userId')} ? 'form-group has-error' : 'form-group'" >
                         <label for="userId" class="col-form-label">UserId</label>
                         <input type="text" th:field="*{userId}" class="form-control" id="userId" placeholder="user id">
+                        <span class="help-block" th:if="${#fields.hasErrors('userId')}">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('userId')}" th:text="${err}"/>
+                            </ul>
+                        </span>
                     </div>
 
                     <div class="form-group blu-margin">
-                        <label for="balance" class="col-form-label">Balance</label>
+                        <label for="balance" class="col-form-label" th:class="${#fields.hasErrors('balance')} ? 'form-group has-error' : 'form-group'">Balance</label>
                         <input type="text" th:field="*{balance}" class="form-control" id="balance" placeholder="balance">
+                        <span class="help-block" th:if="${#fields.hasErrors('balance')}">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('balance')}" th:text="${err}"/>
+                            </ul>
+                        </span>
                     </div>
 
                     <div class="form-group blu-margin">
-                        <label for="dropOperator" class="col-form-label">Select Account</label>
-                        <select class="form-control" th:field="*{accountType}" id="dropOperator">
-                            <option value="0">Select</option>
+                        <label for="accountType" class="col-form-label">Select Account</label>
+                        <select th:required="required" class="form-control" th:field="*{accountType}" id="accountType">
+
                             <option th:each="accountType : ${accountTypes}" th:value="${accountType.name()}"
                                     th:text="${accountType.name}"></option>
                         </select>

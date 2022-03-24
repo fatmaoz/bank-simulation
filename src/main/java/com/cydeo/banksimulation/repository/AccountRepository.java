@@ -25,7 +25,7 @@ public class AccountRepository {
 
     public Account findById(UUID accountId) {
        return accountList.stream().filter(account -> account.getId().equals(accountId)).findAny().orElseThrow(() ->
-                new RecordNotFoundException("This account is not in the databse"));
+                new RecordNotFoundException("This account is not in the database"));
     }
 
     public Account update(Account account){

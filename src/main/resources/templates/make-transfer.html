@@ -20,7 +20,8 @@
                             <label for="sender" class="col-form-label">Sender</label>
                             <select class="form-control" th:field="*{sender}" id="sender">
                                 <option value="0">Select Account</option>
-                                <option th:each="account : ${accounts}" th:value="${account.getId()}" th:text="${account.getBalance()} + '-' + ${account.getUserId()} + '-' + ${account.getAccountType()}"></option>
+                                <option th:each="account : ${accounts}" th:value="${account.getId()}"
+                                        th:text="${account.getBalance()} + '-' + ${account.getUserId()} + '-' + ${account.getAccountType()}"></option>
                             </select>
                         </div>
 
@@ -28,7 +29,8 @@
                             <label for="receiver" class="col-form-label">Receiver</label>
                             <select class="form-control" th:field="*{receiver}" id="receiver">
                                 <option value="0">Select Account</option>
-                                <option th:each="account : ${accounts}" th:value="${account.getId()}" th:text="${account.getBalance()} + '-' + ${account.getUserId()} + '-' + ${account.getAccountType()}"></option>
+                                <option th:each="account : ${accounts}" th:value="${account.getId()}"
+                                        th:text="${account.getBalance()} + '-' + ${account.getUserId()} + '-' + ${account.getAccountType()}"></option>
                             </select>
                         </div>
 
