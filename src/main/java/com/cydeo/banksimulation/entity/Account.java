@@ -23,7 +23,7 @@ public class Account {
     private Date creationDate;
 
     @NotNull()
-    private UUID userId;
+    private Long userId;
 
     @NotNull()
     @Positive

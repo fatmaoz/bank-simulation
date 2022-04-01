@@ -23,7 +23,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account createNewAccount(BigDecimal balance, Date creationDate, AccountType accountType, UUID userId) {
+    public Account createNewAccount(BigDecimal balance, Date creationDate, AccountType accountType, Long userId) {
         Account account = Account.builder().id(UUID.randomUUID())
                 .userId(userId).accountType(accountType).balance(balance).
                 creationDate(creationDate).accountStatus(AccountStatus.ACTIVE).build();
