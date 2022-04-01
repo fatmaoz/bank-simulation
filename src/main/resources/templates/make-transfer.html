@@ -15,33 +15,47 @@
         <div class="col-md-6">
             <div>
                 <form th:action="@{/transfer}" th:object="${transaction}" method="post">
+                    <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+                        <p th:text="#{general.hasErrors}">Error Message</p>
+                    </div>
                     <div class="row">
                         <div class="form-group blu-margin">
                             <label for="sender" class="col-form-label">Sender</label>
                             <select class="form-control" th:field="*{sender}" id="sender">
-                                <option value="0">Select Account</option>
+                                <option th:value="Select" >Select Account</option>
                                 <option th:each="account : ${accounts}" th:value="${account.getId()}"
                                         th:text="${account.getBalance()} + '-' + ${account.getUserId()} + '-' + ${account.getAccountType()}"></option>
                             </select>
+
                         </div>
 
                         <div class="form-group blu-margin">
                             <label for="receiver" class="col-form-label">Receiver</label>
                             <select class="form-control" th:field="*{receiver}" id="receiver">
-                                <option value="0">Select Account</option>
+                                <option th:value="Select">Select Account</option>
                                 <option th:each="account : ${accounts}" th:value="${account.getId()}"
                                         th:text="${account.getBalance()} + '-' + ${account.getUserId()} + '-' + ${account.getAccountType()}"></option>
                             </select>
                         </div>
 
-                        <div class="form-group blu-margin">
+                        <div  th:class="${#fields.hasErrors('amount')} ? 'form-group has-error' : 'form-group'">
                             <label for="amount" class="col-form-label">Amount</label>
                             <input type="text" th:field="*{amount}" class="form-control" id="amount" placeholder="Amount">
+                            <span class="help-block" th:if="${#fields.hasErrors('amount')}">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('amount')}" th:text="${err}"/>
+                            </ul>
+                        </span>
                         </div>
 
-                        <div class="form-group blu-margin">
+                        <div  th:class="${#fields.hasErrors('message')} ? 'form-group has-error' : 'form-group'">
                             <label for="message" class="col-form-label">Message</label>
                             <input type="text" th:field="*{message}" class="form-control" id="message" placeholder="Message">
+                            <span class="help-block" th:if="${#fields.hasErrors('message')}">
+                            <ul>
+                                <li th:each="err : ${#fields.errors('message')}" th:text="${err}"/>
+                            </ul>
+                        </span>
                         </div>
                     </div>
                     <div class="row">

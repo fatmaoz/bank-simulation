@@ -6,10 +6,7 @@ import com.cydeo.banksimulation.enums.AccountType;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.UUID;
@@ -19,12 +16,17 @@ import java.util.UUID;
 public class Account {
 
     private UUID id;
+
+    @NotNull
     private AccountType accountType;
     private AccountStatus accountStatus;
     private Date creationDate;
-    @NotNull(message = "UserId can not be null")
-    private Long userId;
-    @NotNull(message = "Balance can not be null")
+
+    @NotNull()
+    private UUID userId;
+
+    @NotNull()
+    @Positive
     private BigDecimal balance;
 
 }

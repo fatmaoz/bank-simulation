@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface AccountService {
 
-    Account createNewAccount(BigDecimal balance, Date crationDate, AccountType accountType, Long userId);
+    Account createNewAccount(BigDecimal balance, Date crationDate, AccountType accountType, UUID userId);
 
     List<Account> listAllAccount();
 
