@@ -3,11 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Users</title>
+    <title>Make Transfer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/shards.min.css">
+    <link rel="stylesheet" href="../../css/shards.min.css">
 </head>
 <body>
 <div class="container my-5">
@@ -22,40 +22,49 @@
                         <div class="form-group blu-margin">
                             <label for="sender" class="col-form-label">Sender</label>
                             <select class="form-control" th:field="*{sender}" id="sender">
-                                <option th:value="Select" >Select Account</option>
+                                <option th:value="''" >Select Account</option>
                                 <option th:each="account : ${accounts}" th:value="${account.getId()}"
                                         th:text="${account.getBalance()} + '-' + ${account.getUserId()} + '-' + ${account.getAccountType()}"></option>
                             </select>
-
+                            <span class="help-block" th:if="${#fields.hasErrors('sender')}">
+                                <ul>
+                                    <li th:each="err : ${#fields.errors('sender')}" th:text="${err}"/>
+                                </ul>
+                            </span>
                         </div>
 
                         <div class="form-group blu-margin">
                             <label for="receiver" class="col-form-label">Receiver</label>
                             <select class="form-control" th:field="*{receiver}" id="receiver">
-                                <option th:value="Select">Select Account</option>
+                                <option th:value="''">Select Account</option>
                                 <option th:each="account : ${accounts}" th:value="${account.getId()}"
                                         th:text="${account.getBalance()} + '-' + ${account.getUserId()} + '-' + ${account.getAccountType()}"></option>
                             </select>
+                            <span class="help-block" th:if="${#fields.hasErrors('receiver')}">
+                                <ul>
+                                    <li th:each="err : ${#fields.errors('receiver')}" th:text="${err}"/>
+                                </ul>
+                            </span>
                         </div>
 
-                        <div  th:class="${#fields.hasErrors('amount')} ? 'form-group has-error' : 'form-group'">
+                        <div  class="form-group blu-margin" th:class="${#fields.hasErrors('amount')} ? 'form-group has-error' : 'form-group'">
                             <label for="amount" class="col-form-label">Amount</label>
                             <input type="text" th:field="*{amount}" class="form-control" id="amount" placeholder="Amount">
                             <span class="help-block" th:if="${#fields.hasErrors('amount')}">
-                            <ul>
-                                <li th:each="err : ${#fields.errors('amount')}" th:text="${err}"/>
-                            </ul>
-                        </span>
+                                <ul>
+                                    <li th:each="err : ${#fields.errors('amount')}" th:text="${err}"/>
+                                </ul>
+                            </span>
                         </div>
 
-                        <div  th:class="${#fields.hasErrors('message')} ? 'form-group has-error' : 'form-group'">
+                        <div class="form-group blu-margin" th:class="${#fields.hasErrors('message')} ? 'form-group has-error' : 'form-group'">
                             <label for="message" class="col-form-label">Message</label>
                             <input type="text" th:field="*{message}" class="form-control" id="message" placeholder="Message">
                             <span class="help-block" th:if="${#fields.hasErrors('message')}">
                             <ul>
                                 <li th:each="err : ${#fields.errors('message')}" th:text="${err}"/>
                             </ul>
-                        </span>
+                            </span>
                         </div>
                     </div>
                     <div class="row">

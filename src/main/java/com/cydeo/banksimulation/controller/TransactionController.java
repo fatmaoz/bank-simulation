@@ -30,13 +30,14 @@ public class TransactionController {
         model.addAttribute("accounts", accountService.listAllAccount());
         model.addAttribute("lastTransactionList", transactionService.retrieveLastTransactions());
 
-        return "make-transfer";
+        return "transaction/make-transfer";
     }
 
     @PostMapping("/transfer")
-    public String makeTransfer(@Valid @ModelAttribute("transaction") Transaction transaction, BindingResult bindingResult){
+    public String makeTransfer(@Valid @ModelAttribute("transaction") Transaction transaction, BindingResult bindingResult,Model model){
         if (bindingResult.hasErrors()){
-            return "make-transfer";
+            model.addAttribute("accounts", accountService.listAllAccount());
+            return "transaction/make-transfer";
         }
         Account receiver = accountService.retrieveById(transaction.getReceiver());
         Account sender = accountService.retrieveById(transaction.getSender());
@@ -47,7 +48,7 @@ public class TransactionController {
     @GetMapping("/transactions/{id}")
     public String retrieveTransactionDetailByAccountId(@PathVariable("id") UUID id, Model model) {
         model.addAttribute("transactionList", transactionService.findTransactionListByAccountId(id));
-        return "transactions";
+        return "transaction/transactions";
     }
 
 

@@ -9,7 +9,7 @@
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css"
           integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/shards.min.css">
+    <link rel="stylesheet" href="../../css/shards.min.css">
 </head>
 <body>
 <div class="container my-5">
@@ -24,7 +24,7 @@
 
                     <div class="form-group blu-margin" th:class="${#fields.hasErrors('userId')} ? 'form-group has-error' : 'form-group'" >
                         <label for="userId" class="col-form-label">UserId</label>
-                        <input type="text" th:field="*{userId}" class="form-control" id="userId" placeholder="user id">
+                        <input type="text" th:field="*{userId}"   id="userId" placeholder="user id">
                         <span class="help-block" th:if="${#fields.hasErrors('userId')}">
                             <ul>
                                 <li th:each="err : ${#fields.errors('userId')}" th:text="${err}"/>
@@ -32,8 +32,8 @@
                         </span>
                     </div>
 
-                    <div class="form-group blu-margin">
-                        <label for="balance" class="col-form-label" th:class="${#fields.hasErrors('balance')} ? 'form-group has-error' : 'form-group'">Balance</label>
+                    <div class="form-group blu-margin" th:class="${#fields.hasErrors('balance')} ? 'form-group has-error' : 'form-group'">
+                        <label for="balance" class="col-form-label" >Balance</label>
                         <input type="text" th:field="*{balance}" class="form-control" id="balance" placeholder="balance">
                         <span class="help-block" th:if="${#fields.hasErrors('balance')}">
                             <ul>

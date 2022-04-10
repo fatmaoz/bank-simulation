@@ -15,7 +15,9 @@ import java.util.UUID;
 public class Transaction {
 
 
+    @NotNull
     private UUID sender;
+    @NotNull
     private UUID receiver;
 
     @NotNull
