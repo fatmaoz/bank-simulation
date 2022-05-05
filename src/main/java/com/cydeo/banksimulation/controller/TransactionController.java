@@ -1,7 +1,6 @@
 package com.cydeo.banksimulation.controller;
 
-import com.cydeo.banksimulation.entity.Account;
-import com.cydeo.banksimulation.entity.Transaction;
+import com.cydeo.banksimulation.dto.TransactionDTO;
 import com.cydeo.banksimulation.service.AccountService;
 import com.cydeo.banksimulation.service.TransactionService;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +10,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Date;
 import java.util.UUID;
 
 
@@ -26,7 +24,7 @@ public class TransactionController {
 
     @GetMapping("/make-transfer")
     public String retrieveTransactionDetailByAccountId(Model model) {
-        model.addAttribute("transaction", Transaction.builder().build());
+        model.addAttribute("transaction", TransactionDTO.builder().build());
         model.addAttribute("accounts", accountService.listAllAccount());
         model.addAttribute("lastTransactionList", transactionService.retrieveLastTransactions());
 
@@ -34,14 +32,14 @@ public class TransactionController {
     }
 
     @PostMapping("/transfer")
-    public String makeTransfer(@Valid @ModelAttribute("transaction") Transaction transaction, BindingResult bindingResult,Model model){
+    public String makeTransfer(@Valid @ModelAttribute("transaction") TransactionDTO transactionDTO, BindingResult bindingResult, Model model){
         if (bindingResult.hasErrors()){
             model.addAttribute("accounts", accountService.listAllAccount());
             return "transaction/make-transfer";
         }
-        Account receiver = accountService.retrieveById(transaction.getReceiver());
-        Account sender = accountService.retrieveById(transaction.getSender());
-        transactionService.makeTransfer(transaction.getAmount(), new Date(), sender, receiver, transaction.getMessage());
+//        AccountDTO receiver = accountService.retrieveById(transaction.getReceiver());
+//        AccountDTO sender = accountService.retrieveById(transaction.getSender());
+//        transactionService.makeTransfer(transaction.getAmount(), new Date(), sender, receiver, transaction.getMessage());
         return "redirect:/make-transfer";
     }
 

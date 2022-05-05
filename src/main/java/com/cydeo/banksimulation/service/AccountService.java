@@ -1,5 +1,6 @@
 package com.cydeo.banksimulation.service;
 
+import com.cydeo.banksimulation.dto.AccountDTO;
 import com.cydeo.banksimulation.entity.Account;
 import com.cydeo.banksimulation.enums.AccountType;
 
@@ -14,7 +15,7 @@ public interface AccountService {
 
     List<Account> listAllAccount();
 
-    void deleteAccount(UUID accountId);
+    void deleteAccount(Long accountId);
 
-    Account retrieveById(UUID accountId);
+    Account retrieveById(Long accountId);
 }

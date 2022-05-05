@@ -1,6 +1,6 @@
 package com.cydeo.banksimulation.controller;
 
-import com.cydeo.banksimulation.entity.Account;
+import com.cydeo.banksimulation.dto.AccountDTO;
 import com.cydeo.banksimulation.enums.AccountType;
 import com.cydeo.banksimulation.service.AccountService;
 import org.springframework.stereotype.Controller;
@@ -33,13 +33,13 @@ public class AccountController {
 
     @GetMapping("/create-form")
     public String getCreateForm(Model model){
-        model.addAttribute("account", Account.builder().build());
+        model.addAttribute("account", AccountDTO.builder().build());
         model.addAttribute("accountTypes", AccountType.values());
         return "account/create-account";
     }
 
     @PostMapping("/create")
-    public String createAccount(@Valid @ModelAttribute("account") Account account, BindingResult bindingResult, Model model) {
+    public String createAccount(@Valid @ModelAttribute("account") AccountDTO account, BindingResult bindingResult, Model model) {
 
         if(bindingResult.hasErrors()){
             model.addAttribute("accountTypes", AccountType.values());
@@ -59,7 +59,7 @@ public class AccountController {
 
 
     @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") UUID id) {
+    public String deleteUser(@PathVariable("id") Long id) {
         accountService.deleteAccount(id);
         return "redirect:/index";
     }

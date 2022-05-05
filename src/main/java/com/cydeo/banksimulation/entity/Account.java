@@ -3,30 +3,35 @@ package com.cydeo.banksimulation.entity;
 
 import com.cydeo.banksimulation.enums.AccountStatus;
 import com.cydeo.banksimulation.enums.AccountType;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Data
-@Builder
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class Account {
 
-    private UUID id;
-
-    @NotNull
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private AccountType accountType;
     private AccountStatus accountStatus;
     private Date creationDate;
-
-    @NotNull()
     private Long userId;
 
-    @NotNull()
-    @Positive
-    private BigDecimal balance;
-
+    @ManyToMany
+    @JoinTable(name = "account_campaign",
+            joinColumns = @JoinColumn(name = "ACCOUNT_ID"),
+            inverseJoinColumns = @JoinColumn(name = "CAMPAIGN_ID"))
+    private List<Campaign> campaigns;
 }

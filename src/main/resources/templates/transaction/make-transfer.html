@@ -14,7 +14,7 @@
     <div class="row">
         <div class="col-md-6">
             <div>
-                <form th:action="@{/transfer}" th:object="${transaction}" method="post">
+                <form th:action="@{/transfer}" th:object="${transactionDTO}" method="post">
                     <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
                         <p th:text="#{general.hasErrors}">Error Message</p>
                     </div>
@@ -23,8 +23,8 @@
                             <label for="sender" class="col-form-label">Sender</label>
                             <select class="form-control" th:field="*{sender}" id="sender">
                                 <option th:value="''" >Select Account</option>
-                                <option th:each="account : ${accounts}" th:value="${account.getId()}"
-                                        th:text="${account.getBalance()} + '-' + ${account.getUserId()} + '-' + ${account.getAccountType()}"></option>
+                                <option th:each="accountDTO : ${accounts}" th:value="${accountDTO.getId()}"
+                                        th:text="${accountDTO.getBalance()} + '-' + ${accountDTO.getUserId()} + '-' + ${accountDTO.getAccountType()}"></option>
                             </select>
                             <span class="help-block" th:if="${#fields.hasErrors('sender')}">
                                 <ul>
@@ -37,8 +37,8 @@
                             <label for="receiver" class="col-form-label">Receiver</label>
                             <select class="form-control" th:field="*{receiver}" id="receiver">
                                 <option th:value="''">Select Account</option>
-                                <option th:each="account : ${accounts}" th:value="${account.getId()}"
-                                        th:text="${account.getBalance()} + '-' + ${account.getUserId()} + '-' + ${account.getAccountType()}"></option>
+                                <option th:each="accountDTO : ${accounts}" th:value="${accountDTO.getId()}"
+                                        th:text="${accountDTO.getBalance()} + '-' + ${accountDTO.getUserId()} + '-' + ${accountDTO.getAccountType()}"></option>
                             </select>
                             <span class="help-block" th:if="${#fields.hasErrors('receiver')}">
                                 <ul>
@@ -86,12 +86,12 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="transaction : ${lastTransactionList}">
-                        <td th:text="${transaction.sender}"></td>
-                        <td th:text="${transaction.receiver}"></td>
-                        <td th:text="${transaction.amount}"></td>
-                        <td th:text="${transaction.creationDate}"></td>
-                        <td th:text="${transaction.message}"></td>
+                    <tr th:each="transactionDTO : ${lastTransactionList}">
+                        <td th:text="${transactionDTO.sender}"></td>
+                        <td th:text="${transactionDTO.receiver}"></td>
+                        <td th:text="${transactionDTO.amount}"></td>
+                        <td th:text="${transactionDTO.creationDate}"></td>
+                        <td th:text="${transactionDTO.message}"></td>
                     </tr>
                     </tbody>
                 </table>

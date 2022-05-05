@@ -31,15 +31,15 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr th:each="account : ${accountList}">
-                                    <td th:text="${account.getUserId()}"></td>
-                                    <td th:text="${account.getAccountStatus()}"></td>
-                                    <td th:text="${account.getBalance()}"></td>
-                                    <td th:text="${account.getAccountType()}"></td>
-                                    <td th:text="${account.getCreationDate()}"></td>
-                                    <td><a class="btn btn-danger" th:href="@{/delete/{id}(id=${account.id})}">Delete</a></td>
-<!--                                    <td><a class="btn btn-danger" th:href="@{/delete(id=${account.id})}">Delete</a></td>-->
-                                    <td><a class="btn btn-success" th:href="@{/transactions/{id}(id=${account.id})}">Account Transactions</a></td>
+                                <tr th:each="accountDTO : ${accountList}">
+                                    <td th:text="${accountDTO.getUserId()}"></td>
+                                    <td th:text="${accountDTO.getAccountStatus()}"></td>
+                                    <td th:text="${accountDTO.getBalance()}"></td>
+                                    <td th:text="${accountDTO.getAccountType()}"></td>
+                                    <td th:text="${accountDTO.getCreationDate()}"></td>
+                                    <td><a class="btn btn-danger" th:href="@{/delete/{id}(id=${accountDTO.id})}">Delete</a></td>
+<!--                                    <td><a class="btn btn-danger" th:href="@{/delete(id=${accountDTO.id})}">Delete</a></td>-->
+                                    <td><a class="btn btn-success" th:href="@{/transactions/{id}(id=${accountDTO.id})}">Account Transactions</a></td>
                                 </tr>
                             </tbody>
                         </table>

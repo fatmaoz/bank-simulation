@@ -29,12 +29,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr th:each="transaction : ${transactionList}">
-                                    <td th:text="${transaction.sender}"></td>
-                                    <td th:text="${transaction.receiver}"></td>
-                                    <td th:text="${transaction.amount}"></td>
-                                    <td th:text="${transaction.creationDate}"></td>
-                                    <td th:text="${transaction.message}"></td>
+                                <tr th:each="transactionDTO : ${transactionList}">
+                                    <td th:text="${transactionDTO.sender}"></td>
+                                    <td th:text="${transactionDTO.receiver}"></td>
+                                    <td th:text="${transactionDTO.amount}"></td>
+                                    <td th:text="${transactionDTO.creationDate}"></td>
+                                    <td th:text="${transactionDTO.message}"></td>
                                 </tr>
                             </tbody>
                         </table>
