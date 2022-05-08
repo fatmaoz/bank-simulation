@@ -16,7 +16,7 @@
     <h2 class="mb-5">New User</h2>
     <div class="row">
         <div class="col-md-6">
-            <form action="#" th:action="@{/create}" th:object="${accountDTO}" method="post">
+            <form action="#" th:action="@{/create}" th:object="${account}" method="post">
                 <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
                     <p th:text="#{general.hasErrors}">Error Message</p>
                 </div>
