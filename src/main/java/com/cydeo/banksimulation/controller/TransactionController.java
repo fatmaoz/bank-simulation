@@ -44,7 +44,7 @@ public class TransactionController {
     }
 
     @GetMapping("/transactions/{id}")
-    public String retrieveTransactionDetailByAccountId(@PathVariable("id") UUID id, Model model) {
+    public String retrieveTransactionDetailByAccountId(@PathVariable("id") Long id, Model model) {
         model.addAttribute("transactionList", transactionService.findTransactionListByAccountId(id));
         return "transaction/transactions";
     }

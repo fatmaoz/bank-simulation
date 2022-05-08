@@ -3,6 +3,7 @@ package com.cydeo.banksimulation.service.impl;
 import com.cydeo.banksimulation.dto.AccountDTO;
 import com.cydeo.banksimulation.dto.TransactionDTO;
 import com.cydeo.banksimulation.entity.Account;
+import com.cydeo.banksimulation.entity.Transaction;
 import com.cydeo.banksimulation.enums.AccountType;
 import com.cydeo.banksimulation.exception.AccountOwnerShipException;
 import com.cydeo.banksimulation.exception.BadRequestException;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -37,7 +39,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public TransactionDTO makeTransfer(BigDecimal amount, Date creationDate, AccountDTO sender, AccountDTO receiver, String message) {
+    public TransactionDTO makeTransfer( BigDecimal amount, Date creationDate, AccountDTO sender, AccountDTO receiver, String message) {
         if(!underConstruction){
         checkAccountOwnerShip(sender, receiver);
         validateAccounts(sender, receiver);
@@ -94,19 +96,20 @@ public class TransactionServiceImpl implements TransactionService {
         }
     }
 
-//    @Override
-//    public List<TransactionDTO> findAll() {
-//        return transactionRepository.findAll();
-//    }
-//
-//    @Override
-//    public List<TransactionDTO> findTransactionListByAccountId(UUID account) {
-//        return transactionRepository.findByAccountId(account);
-//    }
+    @Override
+    public List<TransactionDTO> findAll() {
+        return transactionRepository.findAll().stream().map(transactionMapper::convertToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TransactionDTO> findTransactionListByAccountId(Long account) {
+        List<Transaction> transactionList = transactionRepository.findAllById(account);
+        return transactionList.stream().map(transactionMapper::convertToDto).collect(Collectors.toList());
+    }
 
     @Override
     public List<TransactionDTO> retrieveLastTransactions() {
 
-        return transactionRepository.findFirst10ByTransaction();
+        return transactionRepository.findLastTenTransction().stream().map(transactionMapper :: convertToDto).collect(Collectors.toList());
     }
 }

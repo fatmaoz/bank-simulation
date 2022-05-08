@@ -3,7 +3,7 @@ package com.cydeo.banksimulation.mapper;
 import com.cydeo.banksimulation.dto.AccountDTO;
 import com.cydeo.banksimulation.dto.TransactionDTO;
 import com.cydeo.banksimulation.entity.Account;
-import org.hibernate.Transaction;
+import com.cydeo.banksimulation.entity.Transaction;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +18,7 @@ public class TransactionMapper {
     }
 
     public Transaction convertToEntity(TransactionDTO transactionDTO){
-        return modelMapper.map(transactionDTO,Transaction.class);
+        return modelMapper.map(transactionDTO, Transaction.class);
     }
 
     public TransactionDTO convertToDto(Transaction transaction){

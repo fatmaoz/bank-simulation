@@ -3,19 +3,22 @@ package com.cydeo.banksimulation.repository;
 import com.cydeo.banksimulation.dto.TransactionDTO;
 import com.cydeo.banksimulation.entity.Transaction;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction,Long> {
 
-   // public List<TransactionDTO> transactionDTOList = new ArrayList<>();
+
+    List<Transaction> findAllById(Long id);
+//First10TransactionOrderByAsc
+    @Query("SELECT t FROM Transaction t ORDER BY t.creationDate ASC LIMIT 10")
+    List<Transaction> findLastTenTransction();
+    // public List<TransactionDTO> transactionDTOList = new ArrayList<>();
 
 //    public TransactionDTO save(TransactionDTO transactionDTO){
 //        transactionDTOList.add(transactionDTO);
