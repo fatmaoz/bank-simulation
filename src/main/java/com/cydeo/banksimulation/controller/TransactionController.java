@@ -15,12 +15,15 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("/")
-@RequiredArgsConstructor
 public class TransactionController {
 
     private final AccountService accountService;
     private final TransactionService transactionService;
 
+    public TransactionController(AccountService accountService, TransactionService transactionService) {
+        this.accountService = accountService;
+        this.transactionService = transactionService;
+    }
 
     @GetMapping("/make-transfer")
     public String retrieveTransactionDetailByAccountId(Model model) {

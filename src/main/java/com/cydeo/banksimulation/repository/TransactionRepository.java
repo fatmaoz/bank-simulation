@@ -16,7 +16,7 @@ public interface TransactionRepository extends JpaRepository<Transaction,Long> {
 
     List<Transaction> findAllById(Long id);
 //First10TransactionOrderByAsc
-    @Query("SELECT t FROM Transaction t ORDER BY t.creationDate ASC LIMIT 10")
+    @Query(name ="SELECT * FROM transactions ORDER BY creation_date ASC LIMIT 10",nativeQuery = true)
     List<Transaction> findLastTenTransction();
     // public List<TransactionDTO> transactionDTOList = new ArrayList<>();
 

@@ -14,7 +14,6 @@ import java.util.UUID;
 public class TransactionDTO {
 
 
-    Long id;
 
     @NotNull
     private UUID sender;

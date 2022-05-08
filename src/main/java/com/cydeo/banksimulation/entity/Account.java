@@ -29,9 +29,9 @@ public class Account {
     private Date creationDate;
     private Long userId;
 
-    @ManyToMany
-    @JoinTable(name = "account_campaign",
-            joinColumns = @JoinColumn(name = "ACCOUNT_ID"),
-            inverseJoinColumns = @JoinColumn(name = "CAMPAIGN_ID"))
-    private List<Campaign> campaigns;
+//    @ManyToMany
+//    @JoinTable(name = "account_campaign",
+//            joinColumns = @JoinColumn(name = "ACCOUNT_ID"),
+//            inverseJoinColumns = @JoinColumn(name = "CAMPAIGN_ID"))
+//    private List<Campaign> campaigns;
 }
