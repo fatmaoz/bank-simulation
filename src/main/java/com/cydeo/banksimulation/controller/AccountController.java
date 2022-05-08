@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.Date;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/")
@@ -46,10 +45,7 @@ public class AccountController {
             return "account/create-account";
         }
         else {
-            accountService.createNewAccount(account.getBalance(),
-                    new Date(),
-                    account.getAccountType(),
-                    account.getUserId());
+            accountService.createNewAccount(account);
 
             model.addAttribute(accountService.listAllAccount());
 

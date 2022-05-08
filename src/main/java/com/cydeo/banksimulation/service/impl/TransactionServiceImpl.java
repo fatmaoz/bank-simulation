@@ -8,30 +8,32 @@ import com.cydeo.banksimulation.exception.AccountOwnerShipException;
 import com.cydeo.banksimulation.exception.BadRequestException;
 import com.cydeo.banksimulation.exception.BalanceNotSufficientException;
 import com.cydeo.banksimulation.exception.UnderConstructionException;
+import com.cydeo.banksimulation.mapper.TransactionMapper;
 import com.cydeo.banksimulation.repository.AccountRepository;
 import com.cydeo.banksimulation.repository.TransactionRepository;
 import com.cydeo.banksimulation.service.TransactionService;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 
-@Component
+@Service
 public class TransactionServiceImpl implements TransactionService {
 
     @Value("${under_construction}")
     private boolean underConstruction;
 
-    AccountRepository accountRepository;
-    TransactionRepository transactionRepository;
+    private final AccountRepository accountRepository;
+    private final TransactionRepository transactionRepository;
+    private final TransactionMapper transactionMapper;
 
-    public TransactionServiceImpl(AccountRepository accountRepository, TransactionRepository transactionRepository) {
+    public TransactionServiceImpl(AccountRepository accountRepository, TransactionRepository transactionRepository, TransactionMapper transactionMapper) {
         this.accountRepository = accountRepository;
         this.transactionRepository = transactionRepository;
+        this.transactionMapper = transactionMapper;
     }
 
     @Override
@@ -40,12 +42,14 @@ public class TransactionServiceImpl implements TransactionService {
         checkAccountOwnerShip(sender, receiver);
         validateAccounts(sender, receiver);
         executeBalanceAndUpdateIfRequired(amount, sender, receiver);
-        return transactionRepository.save(TransactionDTO.builder().
-                                            amount(amount).
-                                            creationDate(creationDate).
-                                            sender(sender.getId()).
-                                            receiver(receiver.getId()).
-                                            message(message).build()) ;
+           TransactionDTO dto = TransactionDTO.builder().
+                    amount(amount).
+                    creationDate(creationDate).
+                    sender(sender.getId()).
+                    receiver(receiver.getId()).
+                    message(message).build();
+         transactionRepository.save(transactionMapper.convertToEntity(dto)) ;
+         return dto;
         }
         else {
             throw new UnderConstructionException("Make transfer is not possible for now. Please try again later");
@@ -90,19 +94,19 @@ public class TransactionServiceImpl implements TransactionService {
         }
     }
 
-    @Override
-    public List<TransactionDTO> findAll() {
-        return transactionRepository.findAll();
-    }
-
-    @Override
-    public List<TransactionDTO> findTransactionListByAccountId(UUID account) {
-        return transactionRepository.findByAccountId(account);
-    }
+//    @Override
+//    public List<TransactionDTO> findAll() {
+//        return transactionRepository.findAll();
+//    }
+//
+//    @Override
+//    public List<TransactionDTO> findTransactionListByAccountId(UUID account) {
+//        return transactionRepository.findByAccountId(account);
+//    }
 
     @Override
     public List<TransactionDTO> retrieveLastTransactions() {
 
-        return transactionRepository.retrieveLastTransactions();
+        return transactionRepository.findFirst10ByTransaction();
     }
 }
