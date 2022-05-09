@@ -6,7 +6,6 @@ import com.cydeo.banksimulation.dto.TransactionDTO;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 public interface TransactionService {
 
@@ -19,4 +18,5 @@ public interface TransactionService {
     List<TransactionDTO> findTransactionListByAccountId(Long account);
 
     List<TransactionDTO> retrieveLastTransactions();
+
 }

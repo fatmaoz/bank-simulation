@@ -1,24 +1,22 @@
 package com.cydeo.banksimulation.dto;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.UUID;
-
 
 @Data
-@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class TransactionDTO {
 
-
-
     @NotNull
-    private UUID sender;
+    private AccountDTO sender;
     @NotNull
-    private UUID receiver;
+    private AccountDTO receiver;
 
     @NotNull
     @Positive(message = "You can not use minus numbers")

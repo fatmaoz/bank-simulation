@@ -9,13 +9,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Date;
 
 @Controller
 @RequestMapping("/")
 
 public class AccountController {
-
 
     private final AccountService accountService;
 
@@ -23,16 +21,15 @@ public class AccountController {
         this.accountService = accountService;
     }
 
-
     @GetMapping("/index")
-    public String accountList (Model model){
+    public String accountList(Model model) {
         model.addAttribute("accountList", accountService.listAllAccount());
         return "account/index";
     }
 
     @GetMapping("/create-form")
-    public String getCreateForm(Model model){
-        model.addAttribute("account", AccountDTO.builder().build());
+    public String getCreateForm(Model model) {
+        model.addAttribute("accountDTO", new AccountDTO());
         model.addAttribute("accountTypes", AccountType.values());
         return "account/create-account";
     }
@@ -40,11 +37,10 @@ public class AccountController {
     @PostMapping("/create")
     public String createAccount(@Valid @ModelAttribute("account") AccountDTO account, BindingResult bindingResult, Model model) {
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             model.addAttribute("accountTypes", AccountType.values());
             return "account/create-account";
-        }
-        else {
+        } else {
             accountService.createNewAccount(account);
 
             model.addAttribute(accountService.listAllAccount());
@@ -53,20 +49,16 @@ public class AccountController {
         }
     }
 
-
     @GetMapping("/delete/{id}")
     public String deleteUser(@PathVariable("id") Long id) {
         accountService.deleteAccount(id);
         return "redirect:/index";
     }
-    
+
 //    @GetMapping("/delete")
 //    public String deleteUser(@RequestParam UUID id, Model model) {
 //        accountService.deleteAccount(id);
 //        return "redirect:/index";
 //    }
-    
-    
-
 
 }

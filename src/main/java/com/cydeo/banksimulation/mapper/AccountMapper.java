@@ -14,11 +14,12 @@ public class AccountMapper {
         this.modelMapper = modelMapper;
     }
 
-    public Account convertToEntity(AccountDTO accountDTO){
-        return modelMapper.map(accountDTO,Account.class);
+    public Account convertToEntity(AccountDTO accountDTO) {
+        return modelMapper.map(accountDTO, Account.class);
     }
 
-    public AccountDTO convertToDto(Account account){
-        return modelMapper.map(account,AccountDTO.class);
+    public AccountDTO convertToDto(Account account) {
+        return modelMapper.map(account, AccountDTO.class);
     }
+
 }
