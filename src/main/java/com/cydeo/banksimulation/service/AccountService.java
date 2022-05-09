@@ -11,11 +11,12 @@ import java.util.List;
 
 public interface AccountService {
 
-    void createNewAccount(AccountDTO accountDTO);
+    AccountDTO createNewAccount(Long id, BigDecimal balance, Date creationDate, AccountType accountType, Long userId);
 
     List<AccountDTO> listAllAccount();
 
     void deleteAccount(Long accountId);
 
     AccountDTO retrieveById(Long accountId);
+
 }

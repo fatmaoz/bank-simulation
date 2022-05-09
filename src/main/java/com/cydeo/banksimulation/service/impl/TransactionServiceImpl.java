@@ -9,6 +9,7 @@ import com.cydeo.banksimulation.exception.AccountOwnerShipException;
 import com.cydeo.banksimulation.exception.BadRequestException;
 import com.cydeo.banksimulation.exception.BalanceNotSufficientException;
 import com.cydeo.banksimulation.exception.UnderConstructionException;
+import com.cydeo.banksimulation.mapper.AccountMapper;
 import com.cydeo.banksimulation.mapper.TransactionMapper;
 import com.cydeo.banksimulation.repository.AccountRepository;
 import com.cydeo.banksimulation.repository.TransactionRepository;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 
@@ -31,11 +33,13 @@ public class TransactionServiceImpl implements TransactionService {
     private final AccountRepository accountRepository;
     private final TransactionRepository transactionRepository;
     private final TransactionMapper transactionMapper;
+    private final AccountMapper accountMapper;
 
-    public TransactionServiceImpl(AccountRepository accountRepository, TransactionRepository transactionRepository, TransactionMapper transactionMapper) {
+    public TransactionServiceImpl(AccountRepository accountRepository, TransactionRepository transactionRepository, TransactionMapper transactionMapper, AccountMapper accountMapper) {
         this.accountRepository = accountRepository;
         this.transactionRepository = transactionRepository;
         this.transactionMapper = transactionMapper;
+        this.accountMapper = accountMapper;
     }
 
     @Override
@@ -44,12 +48,7 @@ public class TransactionServiceImpl implements TransactionService {
         checkAccountOwnerShip(sender, receiver);
         validateAccounts(sender, receiver);
         executeBalanceAndUpdateIfRequired(amount, sender, receiver);
-           TransactionDTO dto = TransactionDTO.builder().
-                    amount(amount).
-                    creationDate(creationDate).
-                    sender(sender.getId()).
-                    receiver(receiver.getId()).
-                    message(message).build();
+           TransactionDTO dto = new TransactionDTO(sender,receiver,amount,message,creationDate);
          transactionRepository.save(transactionMapper.convertToEntity(dto)) ;
          return dto;
         }
@@ -81,14 +80,13 @@ public class TransactionServiceImpl implements TransactionService {
             throw new BadRequestException("Sender account needs to be different from recaiver account");
         }
 
-//        findAccountById(sender.getId());
-//        findAccountById(receiver.getId());
+        findAccountById(sender.getId());
+        findAccountById(receiver.getId());
     }
 
-    private Account findAccountById(Long accountId) {
-        return accountRepository.getById(accountId);
+    private AccountDTO findAccountById(Long id){
+        return accountMapper.convertToDto(accountRepository.getById(id));
     }
-
     private void checkAccountOwnerShip(AccountDTO sender, AccountDTO receiver) {
         if((sender.getAccountType().equals(AccountType.SAVINGS) || receiver.getAccountType().equals(AccountType.SAVINGS))
         && !sender.getUserId().equals(receiver.getUserId())){
@@ -111,5 +109,10 @@ public class TransactionServiceImpl implements TransactionService {
     public List<TransactionDTO> retrieveLastTransactions() {
 
         return transactionRepository.findLastTenTransction().stream().map(transactionMapper :: convertToDto).collect(Collectors.toList());
+    }
+
+    @Override
+    public TransactionDTO findById(Long id) {
+        return transactionMapper.convertToDto(transactionRepository.getById(id));
     }
 }

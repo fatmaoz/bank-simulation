@@ -19,4 +19,5 @@ public interface TransactionService {
     List<TransactionDTO> findTransactionListByAccountId(Long account);
 
     List<TransactionDTO> retrieveLastTransactions();
+    TransactionDTO findById(Long id);
 }

@@ -32,7 +32,7 @@ public class AccountController {
 
     @GetMapping("/create-form")
     public String getCreateForm(Model model){
-        model.addAttribute("account", AccountDTO.builder().build());
+        model.addAttribute("account", new AccountDTO());
         model.addAttribute("accountTypes", AccountType.values());
         return "account/create-account";
     }
@@ -45,9 +45,12 @@ public class AccountController {
             return "account/create-account";
         }
         else {
-            accountService.createNewAccount(account);
+            accountService.createNewAccount(account.getId(),account.getBalance(),
+                    new Date(),
+                    account.getAccountType(),
+                    account.getUserId());
 
-            model.addAttribute(accountService.listAllAccount());
+            model.addAttribute("accountList",accountService.listAllAccount());
 
             return "redirect:/index";
         }
