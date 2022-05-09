@@ -14,7 +14,8 @@ import java.util.stream.Collectors;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
-    List<Transaction> findAllBySenderId(Long id);
+    @Query("SELECT t FROM Transaction t WHERE t.sender.id = ?1 OR t.receiver.id = ?1")
+    List<Transaction> findAllByAccountId(Long id);
 
     //First10TransactionOrderByAsc
     @Query(value = "SELECT * FROM transactions ORDER BY creation_date ASC LIMIT 10", nativeQuery = true)

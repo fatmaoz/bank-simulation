@@ -28,7 +28,7 @@ public class TransactionController {
     public String retrieveTransactionDetailByAccountId(Model model) {
 
         model.addAttribute("transactionDTO", new TransactionDTO());
-        model.addAttribute("accounts", accountService.listAllAccount());
+        model.addAttribute("accounts", accountService.listAllActiveAccount());
         model.addAttribute("lastTransactionList", transactionService.retrieveLastTransactions());
 
         return "transaction/make-transfer";
@@ -39,7 +39,7 @@ public class TransactionController {
     public String makeTransfer(@Valid @ModelAttribute("transactionDTO") TransactionDTO transactionDTO, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("accounts", accountService.listAllAccount());
+            model.addAttribute("accounts", accountService.listAllActiveAccount());
             return "transaction/make-transfer";
         }
 

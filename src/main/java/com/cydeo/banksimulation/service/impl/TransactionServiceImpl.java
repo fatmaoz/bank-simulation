@@ -10,6 +10,7 @@ import com.cydeo.banksimulation.exception.AccountOwnerShipException;
 import com.cydeo.banksimulation.exception.BadRequestException;
 import com.cydeo.banksimulation.exception.BalanceNotSufficientException;
 import com.cydeo.banksimulation.exception.UnderConstructionException;
+import com.cydeo.banksimulation.mapper.AccountMapper;
 import com.cydeo.banksimulation.mapper.TransactionMapper;
 import com.cydeo.banksimulation.repository.AccountRepository;
 import com.cydeo.banksimulation.repository.TransactionRepository;
@@ -31,11 +32,13 @@ public class TransactionServiceImpl implements TransactionService {
     private final AccountRepository accountRepository;
     private final TransactionRepository transactionRepository;
     private final TransactionMapper transactionMapper;
+    private final AccountMapper accountMapper;
 
-    public TransactionServiceImpl(AccountRepository accountRepository, TransactionRepository transactionRepository, TransactionMapper transactionMapper) {
+    public TransactionServiceImpl(AccountRepository accountRepository, TransactionRepository transactionRepository, TransactionMapper transactionMapper, AccountMapper accountMapper) {
         this.accountRepository = accountRepository;
         this.transactionRepository = transactionRepository;
         this.transactionMapper = transactionMapper;
+        this.accountMapper = accountMapper;
     }
 
     @Override
@@ -104,13 +107,13 @@ public class TransactionServiceImpl implements TransactionService {
             throw new BadRequestException("Receiver account is deleted, you can not send money to this account");
         }
 
-//        findAccountById(sender.getId());
-//        findAccountById(receiver.getId());
+        findAccountById(sender.getId());
+        findAccountById(receiver.getId());
     }
 
-//    private Account findAccountById(Long accountId) {
-//        return accountRepository.getById(accountId);
-//    }
+    private AccountDTO findAccountById(Long accountId) {
+        return accountMapper.convertToDto(accountRepository.getById(accountId));
+    }
 
     private void checkAccountOwnerShip(AccountDTO sender, AccountDTO receiver) {
 
@@ -127,8 +130,8 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<TransactionDTO> findTransactionListByAccountId(Long account) {
-        List<Transaction> transactionList = transactionRepository.findAllBySenderId(account);
+    public List<TransactionDTO> findTransactionListByAccountId(Long accountId) {
+        List<Transaction> transactionList = transactionRepository.findAllByAccountId(accountId);
         return transactionList.stream().map(transactionMapper::convertToDto).collect(Collectors.toList());
     }
 
