@@ -111,8 +111,5 @@ public class TransactionServiceImpl implements TransactionService {
         return transactionRepository.findLastTenTransction().stream().map(transactionMapper :: convertToDto).collect(Collectors.toList());
     }
 
-    @Override
-    public TransactionDTO findById(Long id) {
-        return transactionMapper.convertToDto(transactionRepository.getById(id));
-    }
+
 }

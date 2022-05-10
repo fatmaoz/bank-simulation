@@ -43,8 +43,8 @@ public class TransactionController {
             model.addAttribute("accounts", accountService.listAllAccount());
             return "transaction/make-transfer";
         }
-        AccountDTO receiver = accountService.retrieveById(transactionDTO.getReceiver().getUserId());
-        AccountDTO sender = accountService.retrieveById(transactionDTO.getSender().getUserId());
+        AccountDTO receiver = accountService.retrieveById(transactionDTO.getReceiver().getId());
+        AccountDTO sender = accountService.retrieveById(transactionDTO.getSender().getId());
         transactionService.makeTransfer(transactionDTO.getAmount(), new Date(), sender, receiver, transactionDTO.getMessage());
         return "redirect:/make-transfer";
     }
