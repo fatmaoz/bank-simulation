@@ -3,8 +3,7 @@
 # Check https://circleci.com/docs/2.0/language-java/ for more details
 ###
 version: 2
-orbs:
-  aws-ecr: circleci/aws-ecr@0.0.4
+
 jobs:
   build:
     docker:
@@ -67,13 +66,6 @@ workflows:
       - docker-image-and-publish:
           requires:
             - build
-      - aws-ecr/build_and_push_image:
-          region: us-east-1
-          account-url: ${AWS_ECR_ACCOUNT_URL}
-          repo: ${CIRCLE_PROJECT_REPONAME}
-#          tag: ${CIRCLE_BUILD_NUM}
-          requires:
-            - build_test
       - deploy-job:
           requires:
             - docker-image-and-publish
