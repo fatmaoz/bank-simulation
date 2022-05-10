@@ -1,0 +1,79 @@
+# Java Maven CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-java/ for more details
+###
+version: 2
+orbs:
+  aws-ecr: circleci/aws-ecr@0.0.4
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      - image: circleci/openjdk:11-jdk
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/postgres:9.4
+    working_directory: /tmp/workspace
+    environment:
+      # Customize the JVM maximum heap limit
+      MAVEN_OPTS: -Xmx3200m
+    steps:
+      - checkout
+      - run: mkdir -p /tmp/workspace
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "pom.xml" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+      - run: mvn dependency:go-offline
+      - run: mvn clean install -DskipTests
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v1-dependencies-{{ checksum "pom.xml" }}
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths: .
+  docker-image-and-publish:
+    machine: true
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: ls -a /tmp/workspace
+      - run:
+          name: Create Docker image and push to Docker hub
+          command: docker login -u $DOCKER_LOGIN --password $DOCKER_PWD && docker build -t fatmaoz1990/banksimulation /tmp/workspace/ && docker push fatmaoz1990/banksimulation
+      - run:
+          name: Create ECR image and push
+          command: aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin 289073749577.dkr.ecr.us-east-1.amazonaws.com && docker tag banksimulation:latest 289073749577.dkr.ecr.us-east-1.amazonaws.com/banksimulation:latest && docker push 289073749577.dkr.ecr.us-east-1.amazonaws.com/banksimulation:latest
+  deploy-job:
+    docker:
+      #specify the version you desire here
+      - image: circleci/node:10.0.0
+    steps:
+      - run:
+          name: Execute Deployment Script
+          command: |
+            ssh -o "StrictHostKeyChecking no" ec2-user@ec2-3-136-37-88.us-east-2.compute.amazonaws.com <<'ENDSSH'
+            /bin/bash bin/deploy_image.sh
+            docker ps
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - docker-image-and-publish:
+          requires:
+            - build
+      - aws-ecr/build_and_push_image:
+          region: us-east-1
+          account-url: ${AWS_ECR_ACCOUNT_URL}
+          repo: ${CIRCLE_PROJECT_REPONAME}
+#          tag: ${CIRCLE_BUILD_NUM}
+          requires:
+            - build_test
+      - deploy-job:
+          requires:
+            - docker-image-and-publish
