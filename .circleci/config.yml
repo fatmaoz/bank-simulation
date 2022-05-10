@@ -41,9 +41,9 @@ jobs:
       - attach_workspace:
           at: /tmp/workspace
       - run: ls -a /tmp/workspace
-      - run:
-          name: Create Docker image and push to Docker hub
-          command: docker login -u $DOCKER_LOGIN --password $DOCKER_PWD && docker build -t fatmaoz1990/banksimulation /tmp/workspace/ && docker push fatmaoz1990/banksimulation
+#      - run:
+#          name: Create Docker image and push to Docker hub
+#          command: docker login -u $DOCKER_LOGIN --password $DOCKER_PWD && docker build -t fatmaoz1990/banksimulation /tmp/workspace/ && docker push fatmaoz1990/banksimulation
       - run:
           name: Create ECR image and push
           command: aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin 289073749577.dkr.ecr.us-east-1.amazonaws.com && docker tag banksimulation:latest 289073749577.dkr.ecr.us-east-1.amazonaws.com/banksimulation:latest && docker push 289073749577.dkr.ecr.us-east-1.amazonaws.com/banksimulation:latest
