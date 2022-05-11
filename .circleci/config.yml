@@ -45,6 +45,7 @@ workflows:
       - build:
           context:
             - aws
+
       - aws-cli-example:
           context:
               - aws
