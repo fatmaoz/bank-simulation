@@ -25,7 +25,7 @@ public class AccountController {
     @GetMapping("/index")
     public String accountList (Model model){
         model.addAttribute("accountList", accountService.listAllAccount());
-        return "/account/index";
+        return "/index";
     }
 
     @GetMapping("/create-form")
