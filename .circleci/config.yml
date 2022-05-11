@@ -42,7 +42,7 @@ jobs:
       - run: ls -a /tmp/workspace
       - run:
           name: Create Docker image and push to Docker hub
-          command: docker login -u $DOCKER_LOGIN --password $DOCKER_PWD && docker build -t fatmaoz1990/bank-simulation/tmp/workspace/ && docker push fatmaoz1990/bank-simulation
+          command: docker login -u $DOCKER_LOGIN --password $DOCKER_PWD && docker build -t fatmaoz1990/banksimulation/tmp/workspace/ && docker push fatmaoz1990/banksimulation
   deploy-job:
     docker:
       #specify the version you desire here
