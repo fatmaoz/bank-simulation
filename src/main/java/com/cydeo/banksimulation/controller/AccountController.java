@@ -22,10 +22,10 @@ public class AccountController {
     }
 
 
-    @GetMapping("/index")
+    @GetMapping(value={"", "/","/index"})
     public String accountList (Model model){
         model.addAttribute("accountList", accountService.listAllAccount());
-        return "/index";
+        return "index";
     }
 
     @GetMapping("/create-form")
