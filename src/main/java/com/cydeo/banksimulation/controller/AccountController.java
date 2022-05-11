@@ -12,7 +12,6 @@ import javax.validation.Valid;
 import java.util.Date;
 
 @Controller
-@RequestMapping("/")
 public class AccountController {
 
 
