@@ -12,8 +12,6 @@ import javax.validation.Valid;
 import java.util.Date;
 
 @Controller
-@RequestMapping("/")
-
 public class AccountController {
 
 
@@ -27,14 +25,14 @@ public class AccountController {
     @GetMapping("/index")
     public String accountList (Model model){
         model.addAttribute("accountList", accountService.listAllAccount());
-        return "account/index";
+        return "/account/index";
     }
 
     @GetMapping("/create-form")
     public String getCreateForm(Model model){
         model.addAttribute("account", new AccountDTO());
         model.addAttribute("accountTypes", AccountType.values());
-        return "account/create-account";
+        return "/account/create-account";
     }
 
     @PostMapping("/create")
@@ -42,7 +40,7 @@ public class AccountController {
 
         if(bindingResult.hasErrors()){
             model.addAttribute("accountTypes", AccountType.values());
-            return "account/create-account";
+            return "/account/create-account";
         }
         else {
             accountService.createNewAccount(account.getId(),account.getBalance(),
