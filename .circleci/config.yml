@@ -42,7 +42,8 @@ jobs:
       - run: ls -a /tmp/workspace
       - run:
           name: Create Docker image and push to Docker hub
-          command: docker login -u $DOCKER_LOGIN --password $DOCKER_PWD && docker build -t fatmaoz1990/banksimulation /tmp/workspace/ && docker push fatmaoz1990/banksimulation
+#          command: docker login -u $DOCKER_LOGIN --password $DOCKER_PWD && docker build -t fatmaoz1990/banksimulation /tmp/workspace/ && docker push fatmaoz1990/banksimulation
+          command: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 289073749577.dkr.ecr.us-east-1.amazonaws.com && docker build -t banksimulation . && docker tag banksimulation:latest 289073749577.dkr.ecr.us-east-1.amazonaws.com/banksimulation:latest && docker push 289073749577.dkr.ecr.us-east-1.amazonaws.com/banksimulation:latest
   deploy-job:
     docker:
       #specify the version you desire here
