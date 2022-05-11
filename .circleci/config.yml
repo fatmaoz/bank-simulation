@@ -2,57 +2,66 @@
 #
 # Check https://circleci.com/docs/2.0/language-java/ for more details
 ###
-version: 2.1
-
-orbs:
-  aws: circleci/aws-cli@3.1.1
-  ecr: circleci/aws-ecr@8.1.2
-  ecs: circleci/aws-ecs@2.2.1
-executers:
-  banksimulation:
-    parameters:
-      tag:
-        type: string
-    docker:
-      - image: 289073749577.dkr.ecr.us-east-1.amazonaws.com/banksimulation:latest
-
+version: 2
 jobs:
   build:
     docker:
-      - image: cimg/openjdk:11.0.2
+      # specify the version you desire here
+      - image: circleci/openjdk:11-jdk
+      # Specify service dependencies here if necessary
+      # CircleCI maintains a library of pre-built images
+      # documented at https://circleci.com/docs/2.0/circleci-images/
+      # - image: circleci/postgres:9.4
+    working_directory: /tmp/workspace
+    environment:
+      # Customize the JVM maximum heap limit
+      MAVEN_OPTS: -Xmx3200m
     steps:
-      - setup_remote_docker:
-          docker_layer_caching: true
-      - ecr/build-and-push-image:
-          repo: banksimulation
-          tag: latest
-  aws-cli-example:
-    executor: aws/default
+      - checkout
+      - run: mkdir -p /tmp/workspace
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "pom.xml" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+      - run: mvn dependency:go-offline
+      - run: mvn clean install -DskipTests
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: v1-dependencies-{{ checksum "pom.xml" }}
+      - persist_to_workspace:
+          root: /tmp/workspace
+          paths: .
+  docker-image-and-publish:
+    machine: true
     steps:
-      - aws/setup
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: ls -a /tmp/workspace
       - run:
-          name: Use AWS CLI
-          command: aws --version
-  test:
-    executor:
-      name: banksimulation
-      tag: latest
+          name: Create Docker image and push to Docker hub
+          command: docker login -u $DOCKER_LOGIN --password $DOCKER_PWD && docker build -t fatmaoz1990/banksimulation/tmp/workspace/ && docker push fatmaoz1990/banksimulation
+  deploy-job:
+    docker:
+      #specify the version you desire here
+      - image: circleci/node:10.0.0
     steps:
-      - run: npm test
+      - run:
+          name: Execute Deployment Script
+          command: |
+            ssh -o "StrictHostKeyChecking no" ec2-user@ec2-52-54-131-178.compute-1.amazonaws.com <<'ENDSSH'
+            /bin/bash bin/deploy_image.sh
+            docker ps
 workflows:
+  version: 2
   build_and_test:
     jobs:
-      - build:
-          context:
-            - aws
-
-      - aws-cli-example:
-          context:
-              - aws
+      - build
+      - docker-image-and-publish:
           requires:
             - build
-      - test:
-          context:
-            - aws
+      - deploy-job:
           requires:
-            - build
+            - docker-image-and-publish
