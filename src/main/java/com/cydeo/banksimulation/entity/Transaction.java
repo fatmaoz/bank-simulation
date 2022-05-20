@@ -22,6 +22,7 @@ public class Transaction {
     private Account receiver;
     private BigDecimal amount;
     private String message;
+    @Column(columnDefinition = "DATE")
     private Date creationDate;
 
 }

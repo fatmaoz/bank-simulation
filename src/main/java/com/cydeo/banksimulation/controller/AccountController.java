@@ -43,7 +43,7 @@ public class AccountController {
         } else {
             accountService.createNewAccount(account);
 
-            model.addAttribute(accountService.listAllAccount());
+            model.addAttribute("accountList", accountService.listAllAccount());
 
             return "redirect:/index";
         }

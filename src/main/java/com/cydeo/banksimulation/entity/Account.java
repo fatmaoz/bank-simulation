@@ -5,11 +5,9 @@ import com.cydeo.banksimulation.enums.AccountType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Where;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -17,13 +15,15 @@ import java.util.Date;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+//@Where(clause= "account_status=DELETED")
 public class Account {
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private AccountType accountType;
+    @Enumerated(EnumType.STRING)
     private AccountStatus accountStatus;
+    @Column(columnDefinition = "DATE")
     private Date creationDate;
     private Long userId;
     private BigDecimal balance;

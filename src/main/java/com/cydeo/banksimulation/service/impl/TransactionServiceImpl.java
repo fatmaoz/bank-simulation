@@ -14,6 +14,7 @@ import com.cydeo.banksimulation.mapper.AccountMapper;
 import com.cydeo.banksimulation.mapper.TransactionMapper;
 import com.cydeo.banksimulation.repository.AccountRepository;
 import com.cydeo.banksimulation.repository.TransactionRepository;
+import com.cydeo.banksimulation.service.AccountService;
 import com.cydeo.banksimulation.service.TransactionService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -29,17 +30,21 @@ public class TransactionServiceImpl implements TransactionService {
     @Value("${under_construction}")
     private boolean underConstruction;
 
-    private final AccountRepository accountRepository;
+
+    private final AccountService accountService;
     private final TransactionRepository transactionRepository;
     private final TransactionMapper transactionMapper;
     private final AccountMapper accountMapper;
 
-    public TransactionServiceImpl(AccountRepository accountRepository, TransactionRepository transactionRepository, TransactionMapper transactionMapper, AccountMapper accountMapper) {
-        this.accountRepository = accountRepository;
+    public TransactionServiceImpl( AccountService accountService, TransactionRepository transactionRepository,
+                                   TransactionMapper transactionMapper, AccountMapper accountMapper) {
+        this.accountService = accountService;
         this.transactionRepository = transactionRepository;
         this.transactionMapper = transactionMapper;
         this.accountMapper = accountMapper;
     }
+
+
 
     @Override
     public TransactionDTO makeTransfer(BigDecimal amount, Date creationDate, AccountDTO sender, AccountDTO receiver, String message) {
@@ -71,13 +76,14 @@ public class TransactionServiceImpl implements TransactionService {
             sender.setBalance(sender.getBalance().subtract(amount));
             receiver.setBalance(receiver.getBalance().add(amount));
 
-            Account senderAcc = accountRepository.getById(sender.getId());
+            AccountDTO senderAcc = accountService.retrieveById(sender.getId());
+                    //accountRepository.getById(sender.getId());
             senderAcc.setBalance(sender.getBalance());
-            accountRepository.save(senderAcc);
+            accountService.createNewAccount(senderAcc);
 
-            Account receiverAcc = accountRepository.getById(receiver.getId());
+            AccountDTO receiverAcc = accountService.retrieveById(receiver.getId());
             receiverAcc.setBalance(receiver.getBalance());
-            accountRepository.save(receiverAcc);
+            accountService.createNewAccount(receiverAcc);
 
         } else {
             throw new BalanceNotSufficientException("Balance is not enough for this transaction");
@@ -86,7 +92,8 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     private boolean checkSenderBalance(AccountDTO sender, BigDecimal amount) {
-        return accountRepository.getById(sender.getId()).getBalance().subtract(amount).compareTo(BigDecimal.ZERO) > 0;
+        return accountService.retrieveById(sender.getId()).getBalance().subtract(amount).compareTo(BigDecimal.ZERO)> 0;
+                //accountRepository.getById(sender.getId()).getBalance().subtract(amount).compareTo(BigDecimal.ZERO) > 0;
     }
 
     private void validateAccounts(AccountDTO sender, AccountDTO receiver) {
@@ -112,7 +119,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     private AccountDTO findAccountById(Long accountId) {
-        return accountMapper.convertToDto(accountRepository.getById(accountId));
+        return accountService.retrieveById(accountId);
     }
 
     private void checkAccountOwnerShip(AccountDTO sender, AccountDTO receiver) {
