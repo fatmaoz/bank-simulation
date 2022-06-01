@@ -14,6 +14,7 @@
 <body>
 <div class="container my-5">
     <div class="row">
+        <a class="dropdown-item" th:href="@{/logout}"><i ></i>Logout</a>
         <div class="col-md-6">
             <form th:action="@{/transfer}" th:object="${transactionDTO}" method="post">
                 <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">

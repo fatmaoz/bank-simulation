@@ -13,7 +13,7 @@ import javax.validation.Valid;
 import java.util.Date;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("/transaction")
 public class TransactionController {
 
     private final AccountService accountService;
@@ -47,7 +47,7 @@ public class TransactionController {
         AccountDTO sender = transactionDTO.getSender();
         transactionService.makeTransfer(transactionDTO.getAmount(), new Date(), sender, receiver, transactionDTO.getMessage());
 
-        return "redirect:/make-transfer";
+        return "redirect:/transaction/make-transfer";
 
     }
 
