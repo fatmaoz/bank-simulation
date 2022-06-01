@@ -25,8 +25,9 @@ public class Account {
     private AccountStatus accountStatus;
     @Column(columnDefinition = "DATE")
     private Date creationDate;
-    @ManyToOne(cascade = CascadeType.ALL)
-    private User user;
+    private Long userId;
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    private User user;
     private BigDecimal balance;
 //    @ManyToMany
 //    @JoinTable(name = "account_campaign",
