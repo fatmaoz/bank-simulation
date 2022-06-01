@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -14,6 +15,9 @@
 <body>
 <div class="container my-5">
     <div class="row">
+        <div>
+            <a class="dropdown-item" th:href="@{/logout}"><i class="fas fa-power-off mr-2"></i>Logout</a>
+        </div>
         <div class="col-md-10">
             <div th:if="${accountList.size() == 0}">
                 <h2>No Accounts yet!</h2>
@@ -28,7 +32,7 @@
                         <th>Balance</th>
                         <th>Account Type</th>
                         <th>Creation Date</th>
-                        <th>Delete</th>
+                        <th sec:authorize="hasAnyAuthority('Admin')">Delete</th>
                         <th>Account Transactions</th>
                     </tr>
                     </thead>
@@ -39,16 +43,16 @@
                         <td th:text="${accountDTO.getBalance()}"></td>
                         <td th:text="${accountDTO.getAccountType()}"></td>
                         <td th:text="${accountDTO.getCreationDate()}"></td>
-                        <td><a class="btn btn-danger" th:href="@{/delete/{id}(id=${accountDTO.id})}">Delete</a></td>
+                        <td sec:authorize="hasAnyAuthority('Admin')"><a class="btn btn-danger" th:href="@{/delete/{id}(id=${accountDTO.id})}">Delete</a></td>
                         <td><a class="btn btn-success" th:href="@{/transactions/{id}(id=${accountDTO.id})}">Account
                             Transactions</a></td>
                     </tr>
                     </tbody>
                 </table>
             </div>
-            <p class="my-5"><a th:href="@{/create-form}" class="btn btn-primary">Create Account<i
+            <p sec:authorize="hasAnyAuthority('Admin')" class="my-5"><a th:href="@{/create-form}" class="btn btn-primary">Create Account<i
                     class="fas fa-user-plus ml-2"></i></a></p>
-            <p class="my-5"><a th:href="@{/make-transfer}" class="btn btn-primary">Make Transfer<i
+            <p class="my-5"><a th:href="@{/transaction/make-transfer}" class="btn btn-primary">Make Transfer<i
                     class="fas fa-user-plus ml-2"></i></a></p>
         </div>
     </div>

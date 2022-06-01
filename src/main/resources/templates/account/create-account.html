@@ -15,6 +15,9 @@
 <div class="container my-5">
     <h2 class="mb-5">New User</h2>
     <div class="row">
+        <div>
+            <a class="dropdown-item" th:href="@{/logout}"><i class="fas fa-power-off mr-2"></i>Logout</a>
+        </div>
         <div class="col-md-6">
             <form th:action="@{/create}" th:object="${accountDTO}" method="post">
                 <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
@@ -58,7 +61,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6 mt-5">
-                        <input type="submit" class="btn btn-primary" value="Add User">
+                        <button type="submit" class="btn btn-primary">Add User</button>
                     </div>
                 </div>
             </form>

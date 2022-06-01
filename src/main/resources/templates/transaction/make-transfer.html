@@ -14,8 +14,11 @@
 <body>
 <div class="container my-5">
     <div class="row">
+        <div>
+            <a class="dropdown-item" th:href="@{/logout}"><i class="fas fa-power-off mr-2"></i>Logout</a>
+        </div>
         <div class="col-md-6">
-            <form th:action="@{/transfer}" th:object="${transactionDTO}" method="post">
+            <form th:action="@{/transaction/transfer}" th:object="${transactionDTO}" method="post">
                 <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
                     <p th:text="#{general.hasErrors}">Error Message</p>
                 </div>

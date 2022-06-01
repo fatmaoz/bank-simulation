@@ -25,12 +25,6 @@ public class Account {
     private AccountStatus accountStatus;
     @Column(columnDefinition = "DATE")
     private Date creationDate;
-//    @ManyToOne()
-//    private User user;
+    private Long userId;
     private BigDecimal balance;
-//    @ManyToMany
-//    @JoinTable(name = "account_campaign",
-//            joinColumns = @JoinColumn(name = "ACCOUNT_ID"),
-//            inverseJoinColumns = @JoinColumn(name = "CAMPAIGN_ID"))
-//    private List<Campaign> campaigns;
 }

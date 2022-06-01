@@ -35,13 +35,13 @@ public class AccountController {
     }
 
     @PostMapping("/create")
-    public String createAccount(@Valid @ModelAttribute("account") AccountDTO account, BindingResult bindingResult, Model model) {
+    public String createAccount(@Valid @ModelAttribute("accountDTO") AccountDTO accountDTO, BindingResult bindingResult, Model model) {
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("accountTypes", AccountType.values());
             return "account/create-account";
         } else {
-            accountService.createNewAccount(account);
+            accountService.createNewAccount(accountDTO);
 
             model.addAttribute("accountList", accountService.listAllAccount());
 
